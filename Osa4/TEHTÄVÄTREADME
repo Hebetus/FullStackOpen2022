@@ -1,0 +1,1 @@
+MongoDB ei tällä hetkellä mahdollista kuin yhden ilmaisen tietokannan käyttöä kerralla, joten projektin testit käyttävät samaa tietokantaa/skeemaa kuin itse production/dev projekti

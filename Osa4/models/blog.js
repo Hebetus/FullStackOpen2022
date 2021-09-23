@@ -3,6 +3,7 @@ const logger = require('../utils/logger')
 const config = require('../utils/config')
 
 const blogSchema = new mongoose.Schema({
+    id: String,
     title: String,
     author: String,
     url: String,
