@@ -25,7 +25,7 @@ class LocalStorageMock {
     }
 }
 global.localStorage = new LocalStorageMock()
-localStorage.setItem('loggedBlogappUser', {username: "hebe00", token: "test"})
+localStorage.setItem('loggedBlogappUser', { username: "hebe00", token: "test" })
 
 test('renders author and title', () => {
     const blog = {
