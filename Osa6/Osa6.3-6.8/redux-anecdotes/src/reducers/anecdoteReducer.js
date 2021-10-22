@@ -38,7 +38,7 @@ export const handleSubmit1 = (newAnecdote) => {
 const initialState = anecdotesAtStart.map(asObject)
 console.log(initialState)
 
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'VOTE':
       const id = action.data
@@ -59,4 +59,4 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export default reducer
+export default anecdoteReducer

@@ -2,17 +2,24 @@ import React from "react"
 import Button from './Button'
 import { useSelector, useDispatch } from 'react-redux'
 import { vote1 } from '../reducers/anecdoteReducer'
+import { newVote } from "../reducers/notificationReducer"
 
-const AnecdoteList = () => {
-    let anecdotes = useSelector(state => state)
+const AnecdoteList = ({ setVisibility, setNotification }) => {
+    let anecdotes = useSelector(state => state.anecdotes)
+    const filterText = useSelector(state => state.filter)
+    anecdotes = anecdotes.filter(a => a.content.toLowerCase().includes(filterText))
     anecdotes = anecdotes.sort((a, b) => a.votes - b.votes)
     const dispatch = useDispatch()
 
     const vote = (event) => {
-        console.log('vote', event.target.id)
         dispatch(
-          vote1(event.target.id)
+            vote1(event.target.id)
         )
+        dispatch(
+            newVote()
+        )
+        setVisibility(true)
+        setTimeout(() => setVisibility(false), 5000)
     }
 
     return (

@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import { handleSubmit1 } from "../reducers/anecdoteReducer"
 import { useDispatch } from "react-redux"
+import { handleNewAnecdote } from "../reducers/notificationReducer"
 
 
-const AnecdoteForm = () => {
+const AnecdoteForm = ({ setVisibility, setNotification }) => {
     const [newAnecdote, setNewAnecdote] = useState('a new anecdote')
     const dispatch = useDispatch()
 
@@ -16,9 +17,14 @@ const AnecdoteForm = () => {
         event.preventDefault()
         console.log(event.target)
         dispatch(
-          handleSubmit1(newAnecdote)
+            handleSubmit1(newAnecdote)
         )
+        dispatch(
+            handleNewAnecdote(newAnecdote)
+        )
+        setVisibility(true)
         setNewAnecdote('')
+        setTimeout(() => setVisibility(false), 5000)
     }
 
     return (
