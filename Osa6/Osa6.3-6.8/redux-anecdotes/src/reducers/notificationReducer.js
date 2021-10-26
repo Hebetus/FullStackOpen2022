@@ -7,10 +7,11 @@ export const handleNotification = (message) => {
     }
 }
 
-export const newVote = () => {
+export const newVote = (id) => {
+    const message = document.getElementById(id).textContent
     return {
         type: 'VOTE_MESSAGE',
-        data: 'voted'
+        data: `voted on ${message}`
     }
 }
 
