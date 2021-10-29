@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import AnecdoteList from './components/AnecdoteList'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
@@ -8,7 +8,6 @@ import anecdoteService from './services/anecdotes'
 import { intitializeAnecdotes } from './reducers/anecdoteReducer'
 
 const App = () => {
-  const [visibility, setVisibility] = useState(false)
   const dispatch = useDispatch()
   useEffect(() => {
     anecdoteService
@@ -18,10 +17,10 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      <Notification visibility={visibility} />
+      <Notification />
       <Filter />
-      <AnecdoteList setVisibility={setVisibility} />
-      <AnecdoteForm setVisibility={setVisibility} />
+      <AnecdoteList />
+      <AnecdoteForm />
     </div>
   )
 }
