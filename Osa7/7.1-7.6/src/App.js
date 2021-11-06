@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Switch, Route, Link, useParams, useHistory
 } from "react-router-dom"
+import { useField } from './hooks' 
 
 const Notification = (props) => {
   return (
@@ -58,14 +59,16 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
   const history = useHistory()
-
+  const contentHook = useField('content')
+  const authorHook = useField('author')
+  const infoHook = useField('info')
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    const content = contentHook.value
+    const author = authorHook.value
+    const info = infoHook.value
     props.addNew({
       content,
       author,
@@ -77,27 +80,46 @@ const CreateNew = (props) => {
     setTimeout(() => props.setNotification(''), 10000)
   }
 
+  const handleReset = (e) => {
+    e.preventDefault()
+    contentHook.reset()
+    authorHook.reset()
+    infoHook.reset()
+  }
+ 
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onReset={handleReset} >
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input
+            type={contentHook.type}
+            value={contentHook.value}
+            onChange={contentHook.onChange}
+          />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input
+            type={authorHook.type}
+            value={authorHook.value}
+            onChange={authorHook.onChange}
+          />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input
+            type={infoHook.type}
+            value={infoHook.value}
+            onChange={infoHook.onChange}
+          />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
+        <button type="reset">reset</button>
       </form>
     </div>
   )
-
 }
 
 const App = () => {
