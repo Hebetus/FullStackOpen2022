@@ -1,0 +1,34 @@
+OPINTOJAKSON TIEDOT
+Esitiedot
+Osallistujilta edellytetään
+
+vahvaa ohjelmointirutiinia,
+web-ohjelmoinnin ja tietokantojen perustuntemusta,
+git-versionhallintajärjestelmän peruskäytön hallintaa,
+kykyä pitkäjänteiseen työskentelyyn sekä
+valmiutta omatoimiseen tiedonhakuun ja ongelmanratkaisuun.
+Osallistuminen ei kuitenkaan edellytä kurssilla käsiteltävien tekniikoiden tai Javascript-kielen hallintaa.
+Oppimateriaalit
+Kurssimateriaali löytyy osoitteesta https://fullstackopen.com/
+
+Lisätiedot
+Kohderyhmä
+Kurssi sopii sinulle, jos olet
+
+opiskellut tietojenkäsittelyä tai tietotekniikkaa korkeakoulutasolla vuoden tai kaksi, tai
+edistynyt ohjelmoinnin harrastaja, tai
+ohjelmistokehityksen ammattilainen, joka haluaa päivittää websovelluskehitysosaamistaan.
+Sopii kaikkien koulutusohjelmien opiskelijoille.
+
+Sisältö
+Kurssilla tutustutaan JavaScriptilla tapahtuvaan moderniin websovelluskehitykseen. Pääpaino on React-kirjaston avulla toteutettavissa single page -sovelluksissa, ja niitä tukevissa Node.js:llä toteutetuissa REST-rajapinnoissa. Arviointimenetelmät ja -kriteerit
+Kurssilla käsitellään myös sovellusten testaamista, konfigurointia ja suoritusympäristöjen hallintaa sekä MongoDB-tietokannan käyttöä sovelluksen tietojen tallettamiseen.
+
+Tämän ydinkurssin lisäksi voit laajentaa osaamistasi myös erillisten lisäosien kautta.
+
+Arviointimenetelmät ja -kriteerit
+Kurssin arvosana määräytyy kaikkien tehtyjen tehtävien perusteella, myös tähdellä merkityt tehtävät vaikuttavat arvosanaan.
+
+Jos haluat kurssista virallisen suoritusmerkinnän, kuuluu kurssiin myös koe. Hyväksytty suoritus edellyttää kokeen läpäisemistä, koe ei kuitenkaan vaikuta arvosanaan.
+
+Kurssi arvioidaan arvosana-asteikolla 0-5.
