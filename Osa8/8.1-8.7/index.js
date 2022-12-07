@@ -1,6 +1,18 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const { UniqueDirectiveNamesRule } = require('graphql')
 const { v1: uuid } = require('uuid')
+
+const mongoose = require('mongoose')
+const { Book, Author, User } = require('./library-schema')
+
+const jwt = require('jsonwebtoken')
+
+const MONGODB_URI = 'mongodb+srv://databaseurlhere'
+const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY'
+
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('connected to database!'))
+  .catch((error) => console.log('error connecting to database: ', error.message))
 
 let authors = [
   {
@@ -34,20 +46,6 @@ let authors = [
     bookCount: 1
   },
 ]
-
-/*
- * Suomi:
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
- *
- * English:
- * It might make more sense to associate a book with its author by storing the author's id in the context of the book instead of the author's name
- * However, for simplicity, we will store the author's name in connection with the book
- *
- * Spanish:
- * Podría tener más sentido asociar un libro con su autor almacenando la id del autor en el contexto del libro en lugar del nombre del autor
- * Sin embargo, por simplicidad, almacenaremos el nombre del autor en conección con el libro
-*/
 
 let books = [
   {
@@ -102,6 +100,14 @@ let books = [
 ]
 
 const typeDefs = gql`
+    type User {
+      username: String!
+      favoriteGenre: String!
+      id: ID!
+    }
+    type Token {
+      value: String!
+    }
     type Author {
         name: String!
         bookCount: Int!
@@ -114,7 +120,7 @@ const typeDefs = gql`
     type Book {
         title: String!
         published: Int!
-        author: String!
+        author: Author!
         id: ID!
         genres: [String]!
     }
@@ -128,6 +134,7 @@ const typeDefs = gql`
         authorCount: Int!
         allBooks: [Book]!
         allAuthors: [Author]
+        me: User
     }
     type Mutation {
         addBook(
@@ -135,11 +142,21 @@ const typeDefs = gql`
             author: String!
             published: Int!
             genres: [String]!
+            token: String!
         ): Book
         editAuthor(
             name: String!
             setBornTo: Int!
+            token: String!
         ): Author
+        createUser(
+          username: String!
+          favoriteGenre: String!
+        ): User
+        login(
+          username: String!
+          password: String!
+        ): Token
     }
 `
 
@@ -148,7 +165,10 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: () => books,
-    allAuthors: () => authors
+    allAuthors: () => authors,
+    me: (root, args, context) => {
+      return context.currentUser
+    } 
   },
   Author: {
     name: (root) => root.name,
@@ -171,15 +191,53 @@ const resolvers = {
     authorCount: (root) => root.authorCount
   },
   Mutation: {
-    addBook: (root, args) => {
-        const book = {...args, id: uuid()}
-        books = books.concat(book)
-        return book
+    addBook: async (root, args) => {
+        const book = new Book({ ...args, id: uuid() })
+        try {
+          await book.save()
+        }
+        catch(error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args
+          })
+        }
     },
-    editAuthor: (root, args) => {
-        let author = authors.find(auth => auth.name === args.name)
-        author = {...author, born: args.setBornTo}
-        return author
+    editAuthor: async (root, args) => {
+        const author = await Author.findOne({ name: args.name })
+        author.born = args.born
+        try {
+          await author.save()
+        }
+        catch(error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args
+          })
+        }
+    },
+    createUser: async (root, args) => {
+      const user = new User({ ...args, id: uuid() })
+      try {
+        await user.save()
+      }
+      catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+
+      if(!user || args.password !== 'secret') {
+        throw new UserInputError('wrong credentials!')
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+
+      return { value: jwt.sign(userForToken, JWT_SECRET) }
     }
   }
 }
