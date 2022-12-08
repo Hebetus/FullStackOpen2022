@@ -14,6 +14,18 @@ const CREATE_BOOK = gql`
   }
 `
 
+const ALL_BOOKS = gql`
+query {
+  allBooks {
+    title
+    author {
+      name
+    }
+    published
+  }
+}
+`
+
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -21,7 +33,9 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
 
-  const [ createBook ] = useMutation(CREATE_BOOK)
+  const [ createBook ] = useMutation(CREATE_BOOK, {
+    refetchQueries: [ {query: ALL_BOOKS} ]
+  })
 
   if (!props.show) {
     return null
