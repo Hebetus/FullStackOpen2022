@@ -173,6 +173,11 @@ app.get('/api/diagnoses', (req: any, res: any) => {
     res.send(diagnoses);
 });
 
+app.get('/api/patients/:id', (req: any, res: any) => {
+  console.log(`New request: ${req.params}`);
+  res.send(patients.find(patient => patient.id === req.params.id))
+});
+
 app.get('/api/patients', (req: any, res: any) => {
     console.log(`New request: ${req}`);
     res.send(getnonsensitivePatients());
