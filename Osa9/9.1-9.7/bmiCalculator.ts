@@ -1,28 +1,30 @@
-type Result = 'underweight' | 'Normal (healhty weight)' | 'overweight' | 'obese';
-
-export const calculateBmi = (height: number, weight: number) : Result => {
-    const bmi = weight / Math.pow(height / 100, 2);
+const calculateBmi = (height: number, weight: number): string => {
+    const bmi: number = weight / ((height / 100) * (height / 100));
 
     if(bmi < 18.5) {
-        return 'underweight';
+        return "Underweight";
     }
+
     else if(18.5 < bmi && bmi < 25) {
-        return 'Normal (healhty weight)';
+        return "Normal (healthy weight)";
     }
-    else if(25 < bmi && bmi < 30) {
-        return 'overweight';
+
+    else if(25 <= bmi && bmi < 30) {
+        return "Overweight";
     }
-    else if(bmi >= 30) {
-        return 'obese';
-    }
+
     else {
-        throw new Error('Invalid input!');
+        return "Obese";
     }
+};
+
+const height = Number(process.argv[2]);
+const weight = Number(process.argv[3]);
+
+if(height && weight) {
+    console.log(calculateBmi(height, weight));
 }
 
-/**
-const a: number = Number(process.argv[2]);
-const b: number = Number(process.argv[3]);
+//console.log(calculateBmi(180, 74));
 
-console.log(calculateBmi(a, b));
-*/
+export default calculateBmi;
