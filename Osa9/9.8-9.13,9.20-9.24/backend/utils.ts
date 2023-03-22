@@ -1,4 +1,4 @@
-import { Patient, Gender } from "./types";
+import { Patient, Gender,  } from "./types";
 import { v1 as uuid } from 'uuid';
 
 const toNewPatient = (object: unknown): Patient => {
@@ -6,14 +6,15 @@ const toNewPatient = (object: unknown): Patient => {
         throw new Error('Incorrect or missing data!');
     };
 
-    if ('name' in object && 'dateOfBirth' in object && 'gender' in object && 'occupation' in object && 'ssn' in object) {
+    if ('name' in object && 'dateOfBirth' in object && 'gender' in object && 'occupation' in object && 'ssn' in object && 'entries' in object) {
         const newPatient: Patient = {
             id: uuid(),
             name: parseName(object.name),
             dateOfBirth: parseDateOfBirth(object.dateOfBirth),
             gender: parseGender(object.gender),
             occupation: parseOccupation(object.occupation),
-            ssn: parseSsn(object.ssn)
+            ssn: parseSsn(object.ssn),
+            entries: []
         };
 
         return newPatient;
